@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\fashionController;
+use App\Http\Controllers\Login1Controller;
+use App\Http\Controllers\Login2Controller;
+use App\Http\Controllers\LoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,3 +28,6 @@ Route::post('fashion', [fashionController::class, 'store']);
 Route::get('fashion/{id}/edit', [fashionController::class, 'edit']); // Corrected route for edit
 Route::put('fashion/{id}', [fashionController::class, 'update']);
 Route::delete('fashion/{id}', [fashionController::class, 'destroy']);
+
+
+Route::resource('login2', Login2Controller::class);

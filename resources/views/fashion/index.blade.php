@@ -4,11 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion </title>
+    <title>Fashion</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 
 <body class="bg-gray-100">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex justify-center items-center">
+            <div class="space-x-4 text-center">
+                <a href="#" class="text-gray-800 hover:text-blue-500">Fashion</a>
+                <a href="{{ url('login2') }}" class="text-gray-800 hover:text-blue-500">Pengguna</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mx-auto py-8">
         <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow">
             <h1 class="text-3xl font-bold text-gray-800">Fashion Design</h1>
