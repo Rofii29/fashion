@@ -13,23 +13,20 @@ class fashionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $client = new Client();
         $url = "http://127.0.0.1:8000/api/fashion";
         $response = $client->request('GET', $url);
-        $content =  $response->getBody()->getContents();
-        $contentArray = json_decode($content,true);
+        $content = $response->getBody()->getContents();
+        $contentArray = json_decode($content, true);
         $data = $contentArray['data'];
-        return view('fashion.index',compact('data'));
-        
-        $client = new Client();
-        $url = "http://127.0.0.1:8000/api/fashion";
-        $response = $client->request('POST', $url);
-        $content =  $response->getBody()->getContents();
-        $contentArray = json_decode($content,true);
-        $data = $contentArray['data'];
-        return view('fashion.index',compact('data'));
+
+        if ($request->ajax()) {
+            return response()->json(['data' => $data]);
+        }
+
+        return view('fashion.index', compact('data'));
     }
 
     /**
