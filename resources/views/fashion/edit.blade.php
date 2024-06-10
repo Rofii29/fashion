@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Fashion</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto py-8">
         <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
             <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Edit Fashion</h1>
-            <form action="{{ url('fashion/' . $data['id']) }}" method="POST" enctype="multipart/form-data">
+            <form id="editForm" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="mb-6">
@@ -44,5 +45,33 @@
             </form>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#editForm').on('submit', function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: "{{ url('fashion/' . $data['id']) }}",
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            alert(response.message);
+                            window.location.href = "{{ url('fashion') }}";
+                        } else {
+                            alert('Error: ' + response.error);
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('An error occurred: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

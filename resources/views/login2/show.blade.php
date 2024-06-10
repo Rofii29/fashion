@@ -23,7 +23,7 @@
         </div>
         <div class="col-span-3 md:col-span-1 bg-white p-6 rounded-lg shadow">
             <div class="mb-4">
-                <strong class="block mb-1">Nomor:</strong>
+                <strong class="block mb-1">Nomor telepon:</strong>
                 <p>{{ $login2->nomor }}</p>
             </div>
         </div>

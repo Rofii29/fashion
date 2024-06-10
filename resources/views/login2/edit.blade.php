@@ -13,7 +13,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
             <div class="px-4 py-2">
-                <h2 class="text-3xl font-bold text-gray-800">edit user</h2>
+                <h2 class="text-3xl font-bold text-gray-800">Edit pengguna</h2>
             </div>
             <div class="px-4 py-2">
                 <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{{ route('login2.index') }}">Back</a>
@@ -22,7 +22,7 @@
             @if ($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded my-4" role="alert">
                 <strong class="font-bold">Whoops!</strong>
-                <span class="block sm:inline"> There were some problems with your input.</span>
+                <span class="block sm:inline"> Input yang anda masukkan salah.</span>
                 <ul class="mt-2">
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>

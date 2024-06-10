@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body class="bg-gray-100">
     <!-- Navigation Bar -->
     <nav class="bg-white shadow">
@@ -63,13 +61,14 @@
                     success: function(response) {
                         let rows = '';
                         response.data.forEach(item => {
+                            let imageUrl = item.gambar ? `{{ asset('storage') }}/${item.gambar}` : null;
                             rows += `
                                 <tr class="border-b hover:bg-gray-100 transition">
                                     <td class="py-4 px-6 text-gray-800">${item.nama}</td>
                                     <td class="py-4 px-6 text-gray-800">${item.nomortelp}</td>
                                     <td class="py-4 px-6 text-gray-800">${item.alamat}</td>
                                     <td class="py-4 px-6">
-                                        ${item.gambar ? `<img src="{{ asset('storage/') }}/${item.gambar}" alt="Gambar" class="w-16 h-16 rounded-lg object-cover">` : '<p class="text-gray-500">No image available</p>'}
+                                        ${imageUrl ? `<img src="${imageUrl}" alt="Gambar" class="w-16 h-16 rounded-lg object-cover">` : '<p class="text-gray-500">No image available</p>'}
                                     </td>
                                     <td class="py-4 px-6 text-gray-800">${item.text}</td>
                                     <td class="py-4 px-6 text-right flex justify-end space-x-2">
@@ -89,5 +88,4 @@
         });
     </script>
 </body>
-
 </html>

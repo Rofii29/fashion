@@ -8,10 +8,14 @@ use Illuminate\Pagination\Paginator;
 
 class Login2Controller extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $login2s = Login2::paginate(10); // Ganti all() dengan paginate()
-        return view('login2.index', compact('login2s'));
+        if ($request->ajax()) {
+            $login2s = Login2::paginate(10);
+            return response()->json($login2s);
+        }
+
+        return view('login2.index');
     }
     
 

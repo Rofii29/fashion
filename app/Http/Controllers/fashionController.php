@@ -72,11 +72,12 @@ class fashionController extends Controller
     
         if ($contentArray['status'] != true) {
             $error = $contentArray['data'];
-            return redirect()->to('fashion')->withErrors($error)->withInput();
+            return response()->json(['success' => false, 'error' => $error]);
         } else {
-            return redirect()->to('fashion')->with('success', 'Berhasil memasukkan data');
+            return response()->json(['success' => true, 'message' => 'Berhasil memasukkan data']);
         }
     }
+    
     
 
 
@@ -125,47 +126,60 @@ class fashionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-{
-    $nama = $request->nama;
-    $nomortelp = $request->nomortelp;
-    $alamat = $request->alamat;
-    $text = $request->text;
-
-    // Handle image upload if a new image is provided
-    if ($request->hasFile('gambar')) {
-        $gambar = $request->file('gambar')->store('images', 'public');
-    } else {
-        // Retain the old image if no new image is uploaded
-        $gambar = $request->gambar_old;
-    }
-
-    $parameter = [
-        'nama' => $nama,
-        'nomortelp' => $nomortelp,
-        'alamat' => $alamat,
-        'gambar' => $gambar,
-        'text' => $text
-    ];
-
-    $client = new Client();
-    $url = "http://127.0.0.1:8000/api/fashion/$id";
-    try {
-        $response = $client->request('PUT', $url, [
-            'headers' => ['content-type' => 'application/json'],
-            'body' => json_encode($parameter)
-        ]);
-        $content = $response->getBody()->getContents();
-        $contentArray = json_decode($content, true);
-        if ($contentArray['status'] != true) {
-            $error = $contentArray['data'];
-            return redirect()->to('fashion')->withErrors($error)->withInput();
+    {
+        $nama = $request->nama;
+        $nomortelp = $request->nomortelp;
+        $alamat = $request->alamat;
+        $text = $request->text;
+    
+        // Handle image upload if a new image is provided
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar')->store('images', 'public');
         } else {
-            return redirect()->to('fashion')->with('success', 'Berhasil memperbarui data');
+            // Retain the old image if no new image is uploaded
+            $gambar = $request->gambar_old;
         }
-    } catch (\Exception $e) {
-        return redirect()->to('fashion')->withErrors('An unexpected error occurred: ' . $e->getMessage())->withInput();
+    
+        $parameter = [
+            'nama' => $nama,
+            'nomortelp' => $nomortelp,
+            'alamat' => $alamat,
+            'gambar' => $gambar,
+            'text' => $text
+        ];
+    
+        $client = new Client();
+        $url = "http://127.0.0.1:8000/api/fashion/$id";
+        try {
+            $response = $client->request('PUT', $url, [
+                'headers' => ['content-type' => 'application/json'],
+                'body' => json_encode($parameter)
+            ]);
+            $content = $response->getBody()->getContents();
+            $contentArray = json_decode($content, true);
+            if ($contentArray['status'] != true) {
+                $error = $contentArray['data'];
+                if ($request->ajax()) {
+                    return response()->json(['success' => false, 'error' => $error]);
+                } else {
+                    return redirect()->to('fashion')->withErrors($error)->withInput();
+                }
+            } else {
+                if ($request->ajax()) {
+                    return response()->json(['success' => true, 'message' => 'Berhasil memperbarui data']);
+                } else {
+                    return redirect()->to('fashion')->with('success', 'Berhasil memperbarui data');
+                }
+            }
+        } catch (\Exception $e) {
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'error' => 'An unexpected error occurred: ' . $e->getMessage()]);
+            } else {
+                return redirect()->to('fashion')->withErrors('An unexpected error occurred: ' . $e->getMessage())->withInput();
+            }
+        }
     }
-}
+    
 
 
 

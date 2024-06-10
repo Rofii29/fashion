@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Fashion</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body class="bg-gray-100">
     <div class="container mx-auto py-8">
         <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
             <h1 class="text-3xl font-bold mb-8 text-center text-gray-800">Create Fashion</h1>
-            <form action="{{ url('fashion') }}" method="POST" enctype="multipart/form-data">
+            <form id="createForm" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-6">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="nama">Nama</label>
@@ -39,5 +40,30 @@
             </form>
         </div>
     </div>
+    
+    <script>
+        $(document).ready(function () {
+            $('#createForm').on('submit', function (e) {
+                e.preventDefault();
+                let formData = new FormData(this);
+                
+                $.ajax({
+                    url: "http://127.0.0.1:8000/api/fashion", // Ganti dengan URL yang benar
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        // Redirect to fashion page after successful creation
+                        window.location.href = "{{ url('fashion') }}";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        // Handle error here, if needed
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
