@@ -38,4 +38,4 @@ Route::delete('/fashion/{id}', [ApiFashionController::class, 'destroy'])->name('
 // Route::get('/fashion/{id}/edit', [ApiFashionController::class, 'edit'])->name('fashion.edit');
 // Route::get('/fashion/{id}', [ApiFashionController::class, 'show'])->name('fashion.show');
 
-// Route::resource('login2', Login2Controller::class);
+Route::resource('login2', Login2Controller::class);

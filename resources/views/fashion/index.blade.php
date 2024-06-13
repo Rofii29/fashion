@@ -13,6 +13,14 @@
             <h1 class="text-3xl font-bold text-gray-800">Fashion Design</h1>
             <a href="{{ url('fashion/create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Add New</a>
         </div>
+        <nav class="bg-white shadow">
+        <div class="container mx-auto px-4 py-4 flex justify-center items-center">
+            <div class="space-x-4 text-center">
+                <a href="{{ url('fashion') }}" class="text-gray-800 hover:text-blue-500">Fashion</a>
+                <a href="{{ url('login2') }}" class="text-gray-800 hover:text-blue-500">Pengguna</a>
+            </div>
+        </div>
+    </nav>
         <div class="mt-8">
             @if(session('success'))
             <div class="bg-green-500 text-white p-4 rounded-lg mb-4 shadow">
