@@ -8,16 +8,6 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="bg-gray-100">
-    <!-- Navigation Bar -->
-    <nav class="bg-white shadow">
-        <div class="container mx-auto px-4 py-4 flex justify-center items-center">
-            <div class="space-x-4 text-center">
-                <a href="#" class="text-gray-800 hover:text-blue-500">Fashion</a>
-                <a href="{{ url('login2') }}" class="text-gray-800 hover:text-blue-500">Pengguna</a>
-            </div>
-        </div>
-    </nav>
-
     <div class="container mx-auto py-8">
         <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow">
             <h1 class="text-3xl font-bold text-gray-800">Fashion Design</h1>
@@ -55,7 +45,7 @@
 
             function fetchData() {
                 $.ajax({
-                    url: '{{ url("http://127.0.0.1:8000/api/fashion") }}',
+                    url: '{{ url("/api/fashion") }}',
                     type: 'GET',
                     dataType: 'json',
                     success: function(response) {
@@ -73,11 +63,7 @@
                                     <td class="py-4 px-6 text-gray-800">${item.text}</td>
                                     <td class="py-4 px-6 text-right flex justify-end space-x-2">
                                         <a href="{{ url('fashion') }}/${item.id}/edit" class="bg-yellow-500 text-white px-4 py-2 rounded-lg shadow hover:bg-yellow-600">Edit</a>
-                                        <form action="{{ url('fashion') }}/${item.id}" method="POST" class="inline">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600">Delete</button>
-                                        </form>
+                                        <button class="bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600 delete-button" data-id="${item.id}">Delete</button>
                                     </td>
                                 </tr>`;
                         });
@@ -85,6 +71,28 @@
                     }
                 });
             }
+
+            // Handle delete button click
+            $(document).on('click', '.delete-button', function() {
+                let id = $(this).data('id');
+                if (confirm('Are you sure you want to delete this item?')) {
+                    $.ajax({
+                        url: `{{ url('fashion') }}/${id}`,
+                        type: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            alert('Item deleted successfully!');
+                            fetchData();
+                        },
+                        error: function(xhr, status, error) {
+                            console.error(xhr.responseText);
+                            alert('Failed to delete item.');
+                        }
+                    });
+                }
+            });
         });
     </script>
 </body>

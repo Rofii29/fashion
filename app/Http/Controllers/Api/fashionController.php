@@ -146,19 +146,10 @@ class fashionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        $datafashion = fashion::find($id);
-        if(empty($datafashion)){
-            return response()->json([
-                'status' => false,
-                'massage' => 'data tidak ditemukan'
-            ],404);
-        }
-        $post = $datafashion->delete();
+{
+    $fashion = Fashion::findOrFail($id);
+    $fashion->delete();
 
-        return response()->json([
-            'status' => true,
-            'massage' => 'sukses berhasil update data',
-        ]);
-    }
+    return response()->json(['success' => 'Item deleted successfully!']);
+}
 }

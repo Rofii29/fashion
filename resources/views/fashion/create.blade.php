@@ -48,7 +48,7 @@
                 let formData = new FormData(this);
                 
                 $.ajax({
-                    url: "http://127.0.0.1:8000/api/fashion", // Ganti dengan URL yang benar
+                    url: "{{ url('/api/fashion') }}", // Ganti dengan URL yang benar
                     type: 'POST',
                     data: formData,
                     contentType: false,
