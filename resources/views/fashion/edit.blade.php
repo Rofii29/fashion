@@ -1,97 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Fashion</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-
 <body class="bg-gray-100">
     <div class="container mx-auto py-8">
-        <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
-            <h1 class="text-3xl font-bold mb-8 text-gray-800">Edit Fashion</h1>
-            <form id="fashionForm" data-id="{{ $id }}" enctype="multipart/form-data">
+        <div class="flex justify-between items-center bg-white p-4 rounded-lg shadow">
+            <h1 class="text-3xl font-bold text-gray-800">Edit Fashion</h1>
+            <a href="{{ url('fashion') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Back</a>
+        </div>
+        <nav class="bg-white shadow">
+            <div class="container mx-auto px-4 py-4 flex justify-center items-center">
+                <div class="space-x-4 text-center">
+                    <a href="{{ url('fashion') }}" class="text-gray-800 hover:text-blue-500">Fashion</a>
+                    <a href="{{ url('login2') }}" class="text-gray-800 hover:text-blue-500">Pengguna</a>
+                </div>
+            </div>
+        </nav>
+        <div class="mt-8 bg-white p-8 rounded-lg shadow-md">
+            <form id="edit-fashion-form" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Nama</label>
-                    <input type="text" id="nama" name="nama" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <input type="hidden" id="fashion-id" value="{{ $id }}">
+                <div class="mb-4">
+                    <label for="nama" class="block text-gray-700 font-bold mb-2">Nama:</label>
+                    <input type="text" id="nama" name="nama" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Nomor Telpon</label>
-                    <input type="text" id="nomortelp" name="nomortelp" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                <div class="mb-4">
+                    <label for="nomortelp" class="block text-gray-700 font-bold mb-2">Nomor Telepon:</label>
+                    <input type="text" id="nomortelp" name="nomortelp" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Gambar</label>
-                    <input type="file" id="gambar" name="gambar" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                    <img id="currentImage" class="w-16 h-16 rounded-lg mt-4 object-cover">
+                <div class="mb-4">
+                    <label for="alamat" class="block text-gray-700 font-bold mb-2">Alamat:</label>
+                    <input type="text" id="alamat" name="alamat" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 text-sm font-bold mb-2">Text</label>
-                    <textarea id="text" name="text" rows="4" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required></textarea>
+                <div class="mb-4">
+                    <label for="text" class="block text-gray-700 font-bold mb-2">Text:</label>
+                    <input type="text" id="text" name="text" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
-                <div class="flex place-content-end gap-4">
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-600 transition duration-300 ease-in-out">Simpan</button>
-                    <a href="{{ url('fashion') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-gray-600 transition duration-300 ease-in-out">Cancel</a>
+                <div class="mb-4">
+                    <label for="gambar" class="block text-gray-700 font-bold mb-2">Gambar:</label>
+                    <input type="file" id="gambar" name="gambar" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <img id="current-gambar" class="w-16 h-16 rounded-lg object-cover mt-2">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Update</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            let id = $('#fashionForm').data('id');
+            let id = $('#fashion-id').val();
 
+            // Fetch existing data
             $.ajax({
-                url: `http://127.0.0.1:8000/api/fashion/${id}`,
+                url: `{{ url('http://127.0.0.1:8000/api/fashion') }}/${id}`,
                 type: 'GET',
                 dataType: 'json',
                 success: function(response) {
-                    if (response.data) {
+                    if (response.status) {
                         $('#nama').val(response.data.nama);
                         $('#nomortelp').val(response.data.nomortelp);
+                        $('#alamat').val(response.data.alamat);
                         $('#text').val(response.data.text);
-                        if (response.data.gambar) {
-                            $('#currentImage').attr('src', `{{ asset('storage') }}/${response.data.gambar}`);
-                        } else {
-                            $('#currentImage').attr('src', '');
+                        let imageUrl = response.data.gambar ? `{{ asset('storage') }}/${response.data.gambar}` : null;
+                        if (imageUrl) {
+                            $('#current-gambar').attr('src', imageUrl);
                         }
                     } else {
-                        alert('Data tidak ditemukan.');
+                        alert(response.massage);
                     }
                 },
                 error: function(xhr, status, error) {
-                    console.error('Error:', status, error);
-                    alert('Gagal memuat data.');
+                    console.error(xhr.responseText);
                 }
             });
 
-            $('#fashionForm').submit(function(e) {
+            // Handle form submission
+            $('#edit-fashion-form').on('submit', function(e) {
                 e.preventDefault();
 
                 let formData = new FormData(this);
-                formData.append('_method', 'PUT');  // Append the _method field with 'PUT'
 
                 $.ajax({
-                    url: `http://127.0.0.1:8000/api/fashion/${id}`,
-                    type: 'POST',  // Use POST method to send formData
+                    url: `{{ url('http://127.0.0.1:8000/api/fashion') }}/${id}`,
+                    type: 'POST',
                     data: formData,
-                    contentType: false,
                     processData: false,
+                    contentType: false,
                     success: function(response) {
-                        alert('Data berhasil disimpan!');
-                        window.location.href = '/fashion';
+                        if (response.status) {
+                            alert(response.massage);
+                            window.location.href = '{{ url("fashion") }}';
+                        } else {
+                            alert('Failed to update data.');
+                            console.log(response.data);
+                        }
                     },
-                    error: function(xhr) {
-                        alert('Gagal menyimpan data.');
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert('Failed to update data.');
                     }
                 });
             });
         });
     </script>
 </body>
-
 </html>

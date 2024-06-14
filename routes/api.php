@@ -25,5 +25,6 @@ Route::put('fashion/{id}',[fashionController::class, 'update']);
 Route::delete('fashion/{id}', [fashionController::class, 'destroy']);
 Route::apiResource('fashion',fashionController::class);
 
+Route::get('login',[fashionController::class, 'index']);
 
 // Route::apiResource('fashion',fashionController::class); 

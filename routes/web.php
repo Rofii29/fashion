@@ -33,6 +33,7 @@ Route::get('fashion/{id}/edit', function($id) {
 // Route::resource('fashion', ApiFashionController::class);
 Route::delete('/fashion/{id}', [ApiFashionController::class, 'destroy'])->name('fashion.destroy');
 
+
 // Route::get('/fashion', [ApiFashionController::class, 'index'])->name('fashion.index');
 // Route::get('/fashion/create', [ApiFashionController::class, 'create'])->name('fashion.create');
 // Route::get('/fashion/{id}/edit', [ApiFashionController::class, 'edit'])->name('fashion.edit');

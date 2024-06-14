@@ -98,46 +98,58 @@ class fashionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $datafashion = fashion::find($id);
-        if(empty($datafashion)){
-            return response()->json([
-                'status' => false,
-                'massage' => 'data tidak ditemukan'
-            ],404);
-        }
-
-        $rules = [
-            'nama' => 'required',
-            'nomortelp' => 'required',
-            'alamat' => 'required',
-            'gambar' => 'required',
-            'text' => 'required'
-        ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'massage' => 'gagal melakukan update data',
-                'data' => $validator->errors()
-            ]);
-        }
-
-
-
-        $datafashion-> nama = $request->nama;
-        $datafashion-> nomortelp = $request->nomortelp;
-        $datafashion-> alamat = $request->alamat;
-        $datafashion-> gambar = $request->gambar;
-        $datafashion-> text = $request->text;
-
-        $post = $datafashion->save();
-
+{
+    $datafashion = fashion::find($id);
+    if(empty($datafashion)){
         return response()->json([
-            'status' => true,
-            'massage' => 'sukses berhasil update data',
-        ]);
+            'status' => false,
+            'massage' => 'data tidak ditemukan'
+        ], 404);
     }
+
+    $rules = [
+        'nama' => 'required',
+        'nomortelp' => 'required',
+        'alamat' => 'required',
+        'text' => 'required'
+    ];
+
+    if($request->hasFile('gambar')) {
+        $rules['gambar'] = 'image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+    }
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'massage' => 'gagal melakukan update data',
+            'data' => $validator->errors()
+        ], 400);
+    }
+
+    $datafashion->nama = $request->nama;
+    $datafashion->nomortelp = $request->nomortelp;
+    $datafashion->alamat = $request->alamat;
+    $datafashion->text = $request->text;
+
+    if($request->hasFile('gambar')) {
+        $imageName = time().'.'.$request->gambar->extension();  
+        $request->gambar->move(public_path('storage'), $imageName);
+        $datafashion->gambar = $imageName;
+    }
+
+    $datafashion->save();
+
+    // Log the updated data
+    fashion::info('Updated fashion data:', $datafashion->toArray());
+
+    return response()->json([
+        'status' => true,
+        'massage' => 'sukses berhasil update data',
+        'data' => $datafashion
+    ], 200);
+}
+
 
     /**
      * Remove the specified resource from storage.

@@ -14,13 +14,13 @@
             <a href="{{ url('fashion/create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Add New</a>
         </div>
         <nav class="bg-white shadow">
-        <div class="container mx-auto px-4 py-4 flex justify-center items-center">
-            <div class="space-x-4 text-center">
-                <a href="{{ url('fashion') }}" class="text-gray-800 hover:text-blue-500">Fashion</a>
-                <a href="{{ url('login2') }}" class="text-gray-800 hover:text-blue-500">Pengguna</a>
+            <div class="container mx-auto px-4 py-4 flex justify-center items-center">
+                <div class="space-x-4 text-center">
+                    <a href="{{ url('fashion') }}" class="text-gray-800 hover:text-blue-500">Fashion</a>
+                    <a href="{{ url('login2') }}" class="text-gray-800 hover:text-blue-500">Pengguna</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
         <div class="mt-8">
             @if(session('success'))
             <div class="bg-green-500 text-white p-4 rounded-lg mb-4 shadow">
@@ -59,7 +59,7 @@
                     success: function(response) {
                         let rows = '';
                         response.data.forEach(item => {
-                            let imageUrl = item.gambar ? `{{ asset('storage') }}/${item.gambar}` : null;
+                            let imageUrl = item.gambar ? `{{ url('storage') }}/${item.gambar}` : null;
                             rows += `
                                 <tr class="border-b hover:bg-gray-100 transition">
                                     <td class="py-4 px-6 text-gray-800">${item.nama}</td>
@@ -76,11 +76,13 @@
                                 </tr>`;
                         });
                         $('#fashion-data').html(rows);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
                     }
                 });
             }
 
-            // Handle delete button click
             $(document).on('click', '.delete-button', function() {
                 let id = $(this).data('id');
                 if (confirm('Are you sure you want to delete this item?')) {
