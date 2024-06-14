@@ -15,7 +15,14 @@ class penggunaController extends Controller
             'status' => true,
             'massage' => 'data ditemukan',
             'data'=>$data
-        ],200);
-        
+        ],200);  
+    }
+
+    public function destroy($id)
+    {
+        $fashion = Login2::findOrFail($id);
+        $fashion->delete();
+    
+        return response()->json(['success' => 'Item deleted successfully!']);
     }
 }

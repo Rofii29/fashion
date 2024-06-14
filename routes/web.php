@@ -34,9 +34,20 @@ Route::get('fashion/{id}/edit', function($id) {
 Route::delete('/fashion/{id}', [ApiFashionController::class, 'destroy'])->name('fashion.destroy');
 
 
+
+
+Route::get('login2', function() {
+    return view('login2.index');
+});
+Route::get('login2/create', function() {
+    return view('login2.create');
+});
+Route::get('login2/{id}/edit', function($id) {
+    return view('login2.edit', ['id' => $id]);
+});
 // Route::get('/fashion', [ApiFashionController::class, 'index'])->name('fashion.index');
 // Route::get('/fashion/create', [ApiFashionController::class, 'create'])->name('fashion.create');
 // Route::get('/fashion/{id}/edit', [ApiFashionController::class, 'edit'])->name('fashion.edit');
 // Route::get('/fashion/{id}', [ApiFashionController::class, 'show'])->name('fashion.show');
 
-Route::resource('login2', Login2Controller::class);
+// Route::resource('login2', Login2Controller::class);

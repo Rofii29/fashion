@@ -51,8 +51,6 @@ class fashionController extends Controller
             ]);
         }
 
-
-
         $datafashion-> nama = $request->nama;
         $datafashion-> nomortelp = $request->nomortelp;
         $datafashion-> alamat = $request->alamat;
